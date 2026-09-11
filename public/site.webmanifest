@@ -1,0 +1,12 @@
+{
+  "name": "Playa San José — Encarnación",
+  "short_name": "Playa San José",
+  "lang": "es-PY",
+  "display": "standalone",
+  "background_color": "#f6e5c8",
+  "theme_color": "#0d5f69",
+  "icons": [
+    {"src":"/favicon-32.png","sizes":"32x32","type":"image/png"},
+    {"src":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}
+  ]
+}

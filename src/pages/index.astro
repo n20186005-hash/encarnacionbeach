@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Playa San José | Arena, río y atardeceres en Encarnación';
+const description = 'Guía práctica de Playa San José en Encarnación: acceso, guardavidas, estacionamiento, gastronomía, transporte, lugares cercanos y mapa.';
+
+const photos = {
+  hero: { local: '/images/playa-san-jose-encarnacion-main.jpg', remote: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Playa_San_Jos%C3%A9%2C_Encarnaci%C3%B3n_Paraguay.jpg' },
+  sunset: { local: '/images/playa-san-jose-sunset.jpg', remote: 'https://upload.wikimedia.org/wikipedia/commons/3/3d/Playa_San_Jos%C3%A9_-_Avenida_Costanera_%28Encarnaci%C3%B3n%2C_Paraguay%29.jpg' },
+  summer: { local: '/images/playa-san-jose-summer.jpg', remote: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Playa_San_Jos%C3%A9_165245.jpg' },
+  panorama: { local: '/images/playa-san-jose-river.jpg', remote: 'https://upload.wikimedia.org/wikipedia/commons/1/16/Playa_San_Jos%C3%A9-WA0085.jpg' }
+};
+const imageFallback = "this.onerror=null;this.src=this.dataset.fallback";
+
+const mapEmbed = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58038980.14296426!2d-110.60564476177046!3d3.2817204882617412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x945795666177bf13%3A0x2640ad9fd0167c06!2z5Zyj5L2V5aGe5rKZ5rup!5e1!3m2!1ses!2spy!4v1789090469831!5m2!1ses!2spy';
+const googleMapsUrl = 'https://maps.app.goo.gl/xbNEWBqmii5cXXADA';
+
+const placeSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['TouristAttraction', 'LocalBusiness'],
+  name: 'Playa San José',
+  alternateName: 'Playa San José de Encarnación',
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Avenida Costanera República del Paraguay',
+    addressLocality: 'Encarnación',
+    addressRegion: 'Itapúa',
+    postalCode: '8000',
+    addressCountry: 'PY'
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -27.336386,
+    longitude: -55.872929
+  },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    opens: '08:00',
+    closes: '20:00',
+    description: 'Franja publicada para el servicio de guardavidas durante la temporada alta; la playa puede visitarse durante todo el año.'
+  }],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.6',
+    reviewCount: '16546',
+    bestRating: '5'
+  },
+  isAccessibleForFree: true,
+  image: Astro.site ? Object.values(photos).map((photo) => new URL(photo.local, Astro.site).toString()) : undefined,
+  sameAs: [googleMapsUrl]
+};
+
+const faqItems = [
+  ['¿La entrada a Playa San José tiene costo?', 'El acceso general a la playa no tiene una tarifa de entrada publicada. Consumos en paradores, actividades privadas, eventos o estacionamiento regulado pueden tener costos propios.'],
+  ['¿Hay guardavidas?', 'Sí. La información turística municipal publica servicio de guardavidas de 08:00 a 20:00 durante la temporada alta. Respete siempre las boyas, banderas e indicaciones del personal.'],
+  ['¿Cuál es la mejor hora para ir?', 'La tarde es especialmente agradable por la luz sobre el río Paraná y el atardecer. Para bañarse, conviene llegar con tiempo y permanecer dentro de las zonas habilitadas.'],
+  ['¿Cuánto tiempo conviene quedarse?', 'Como referencia práctica, entre 2 y 4 horas alcanza para combinar playa, caminata por la Costanera y una comida o merienda. Si se busca pasar el día, hay servicios y paradores en el entorno.'],
+  ['¿Se puede visitar fuera del verano?', 'Sí. La Municipalidad indica que la playa puede visitarse durante todo el año, aunque la temporada alta y el despliegue de servicios de playa se concentran entre la segunda mitad de octubre y después de Semana Santa.'],
+  ['¿Dónde está exactamente?', 'Está sobre la Avenida Costanera República del Paraguay, en Encarnación, departamento de Itapúa, junto al río Paraná y a los antiguos Silo y Molino San José.']
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map(([question, answer]) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer }
+  }))
+};
+---
+<BaseLayout title={title} description={description} image={photos.hero.remote}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(placeSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  </Fragment>
+
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="#inicio" aria-label="Inicio Playa San José">
+        <img src="/logo.svg" alt="" width="46" height="46" />
+        <span>Playa San José</span>
+      </a>
+      <nav class="navlinks" aria-label="Navegación principal">
+        <a href="#planifica">Planificá</a>
+        <a href="#llegar">Cómo llegar</a>
+        <a href="#sabores">Sabores</a>
+        <a href="#cerca">Qué ver cerca</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <img class="hero-photo" src={photos.hero.local} data-fallback={photos.hero.remote} onerror={imageFallback} alt="Arena de Playa San José con el antiguo silo y molino frente al río Paraná" fetchpriority="high" />
+      <div class="shell hero-inner">
+        <div class="hero-meta">
+          <span class="pill">Encarnación · Itapúa</span>
+          <span class="pill">4,6 ★ · 16.546 reseñas</span>
+          <span class="pill">Ribera del Paraná</span>
+        </div>
+        <div class="hero-copy">
+          <div>
+            <p class="eyebrow" style="color:#ffd29f">Costanera República del Paraguay</p>
+            <h1 class="title-xl">Arena,<br />río y ciudad.</h1>
+          </div>
+          <div class="hero-aside">
+            <p>Una playa urbana de unos 700 metros donde la Costanera de Encarnación se abre al Paraná, con deportes de arena, paradores y patrimonio industrial como telón de fondo.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#planifica">Planificar visita</a>
+              <a class="btn btn-ghost" href={googleMapsUrl} target="_blank" rel="noreferrer">Abrir en Maps ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-wave" aria-hidden="true"></div>
+    </section>
+
+    <section id="planifica" class="section">
+      <div class="shell">
+        <p class="eyebrow">Antes de ir</p>
+        <h2 class="title-section">Lo esencial, sin vueltas.</h2>
+        <p class="lead">La experiencia cambia con la temporada y el clima. Estas referencias ayudan a organizar el día sin convertir la visita en una agenda rígida.</p>
+        <div class="fact-grid">
+          <article class="fact"><div class="icon">$</div><strong>Acceso general gratuito</strong><small>No hay una tarifa general de ingreso publicada; servicios privados pueden tener costo.</small></article>
+          <article class="fact"><div class="icon">☀</div><strong>Mejor momento: tarde</strong><small>Ideal para combinar playa, paseo por la Costanera y atardecer.</small></article>
+          <article class="fact"><div class="icon">⌛</div><strong>2–4 horas</strong><small>Tiempo sugerido para playa + paseo + algo para comer.</small></article>
+          <article class="fact"><div class="icon">◎</div><strong>Guardavidas 08–20</strong><small>Horario publicado para temporada alta; respetá la señalización del día.</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="shell story-grid">
+        <figure class="photo-card">
+          <img src={photos.sunset.local} data-fallback={photos.sunset.remote} onerror={imageFallback} alt="Atardecer sobre Playa San José y la Avenida Costanera" loading="lazy" />
+          <figcaption class="photo-label">Atardecer en la Costanera · foto real de Wikimedia Commons</figcaption>
+        </figure>
+        <div class="story-copy">
+          <p class="eyebrow" style="color:#ffd29f">Una playa con memoria</p>
+          <h2 class="title-section">El Paraná frente al viejo Silo San José.</h2>
+          <p>La playa fue inaugurada en 2011 y tomó su nombre de los antiguos silo y molino harinero del sector. Hoy esos edificios históricos siguen marcando la silueta del borde costero.</p>
+          <p>La Municipalidad enumera sanitarios, cajeros automáticos, atención turística, limpieza permanente, fútbol y vóley de playa, paradores gastronómicos, guardavidas y líneas de boyas para ordenar el uso del agua.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <p class="eyebrow">Servicios y costos</p>
+        <h2 class="title-section">Qué esperar al llegar.</h2>
+        <div class="cards">
+          <article class="card card-accent"><div class="icon">$</div><h3>Entrada / gastos</h3><p>El acceso a la playa es libre según la información pública disponible. Presupuestá aparte comida, bebidas, actividades, eventos y cualquier estacionamiento regulado.</p></article>
+          <article class="card"><div class="icon">P</div><h3>Estacionamiento</h3><p>La Costanera dispone de sectores para estacionar. La regulación y las tarifas pueden cambiar por ordenanza o eventos: revisá la cartelería y las indicaciones vigentes en el lugar.</p></article>
+          <article class="card"><div class="icon">♿</div><h3>Accesibilidad</h3><p>La playa se presenta con un modelo inclusivo y mejoras progresivas de acceso. Si necesitás asistencia específica, conviene consultar al puesto de atención turística antes de la visita.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="shell">
+        <div class="gallery">
+          <figure>
+            <img src={photos.summer.local} data-fallback={photos.summer.remote} onerror={imageFallback} alt="Visitantes disfrutando del agua en Playa San José" loading="lazy" />
+            <figcaption>Verano junto al Paraná · Wikimedia Commons</figcaption>
+          </figure>
+          <div class="gallery-side">
+            <figure>
+              <img src={photos.panorama.local} data-fallback={photos.panorama.remote} onerror={imageFallback} alt="Vista de Playa San José y su borde costero" loading="lazy" />
+              <figcaption>Ribera y paseo costero · Wikimedia Commons</figcaption>
+            </figure>
+            <div class="card card-accent" style="display:flex;flex-direction:column;justify-content:center">
+              <p class="eyebrow">Temporada alta</p>
+              <h3 style="font-size:1.8rem;margin:.25rem 0 .5rem">De octubre a después de Semana Santa.</h3>
+              <p>La referencia municipal ubica el inicio habitual en la segunda mitad de octubre. Fuera de ese período, la playa sigue siendo un paseo urbano atractivo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="llegar" class="section">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Transporte detallado</p>
+          <h2 class="title-section">Llegar es seguir el río.</h2>
+          <p class="lead">Playa San José está sobre la Avenida Costanera República del Paraguay, en la zona central de Encarnación. Para la ruta exacta del día, usá el mapa integrado al final.</p>
+          <a class="btn btn-primary" href={googleMapsUrl} target="_blank" rel="noreferrer">Indicaciones en Google Maps ↗</a>
+        </div>
+        <div class="route">
+          <article class="route-step"><h3>Desde el Puente Internacional</h3><p>La guía municipal propone accesos urbanos por Av. Irrazábal, Boulevard Iturbe o la propia Costanera. Como referencia, publica recorridos de unos 6 km.</p></article>
+          <article class="route-step"><h3>Desde Ruta PY01</h3><p>Ingresá hacia el área central por Av. Gaspar Rodríguez de Francia y conectá con la Costanera. Seguí la señalización local hacia Playa San José.</p></article>
+          <article class="route-step"><h3>Desde Ruta PY06</h3><p>El acceso municipal de referencia enlaza Av. Gral. Bernardino Caballero con Av. Gaspar Rodríguez de Francia antes de bajar hacia el río.</p></article>
+          <article class="route-step"><h3>A pie o en transporte urbano</h3><p>Si ya estás en el centro de Encarnación, la playa forma parte del gran corredor peatonal y recreativo de la Costanera. Para buses o desvíos temporales, consultá información local del día.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sabores" class="section food-strip">
+      <div class="shell">
+        <p class="eyebrow">Sabores cercanos</p>
+        <h2 class="title-section">Comer con vista al agua.</h2>
+        <p class="lead">La zona tiene numerosos paradores y un corredor gastronómico en el entorno de la Costanera. En vez de fijar locales que pueden cambiar, esta guía te orienta por tipo de plan.</p>
+        <div class="food-grid" style="margin-top:2rem">
+          <article class="food-card"><div class="pad"><div class="icon">☕</div><h3>Merienda al atardecer</h3><p>Cafés, tereré, jugos y opciones dulces para extender la caminata cuando baja el sol.</p></div></article>
+          <article class="food-card"><div class="pad"><div class="icon">♨</div><h3>Paradores de playa</h3><p>Opciones rápidas y casuales a pasos de la arena; horarios y propuestas varían según temporada.</p></div></article>
+          <article class="food-card"><div class="pad"><div class="icon">✦</div><h3>Paseo Gastronómico</h3><p>El área cercana a la Costanera concentra restaurantes para cerrar el día con una comida más larga.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cerca" class="section">
+      <div class="shell">
+        <p class="eyebrow">Alrededores</p>
+        <h2 class="title-section">Cuatro extensiones naturales del paseo.</h2>
+        <div class="nearby-grid">
+          <article class="nearby"><span class="num">01</span><h3>Silo y Molino San José</h3><p>Patrimonio industrial que explica el nombre y el carácter visual de la playa.</p></article>
+          <article class="nearby"><span class="num">02</span><h3>Costanera República del Paraguay</h3><p>El paseo ribereño para caminar, pedalear y mirar el Paraná desde distintos puntos.</p></article>
+          <article class="nearby"><span class="num">03</span><h3>Centro Cívico / Sambódromo</h3><p>Uno de los grandes espacios urbanos ligados a los eventos de Encarnación.</p></article>
+          <article class="nearby"><span class="num">04</span><h3>Playa Mbói Ka’e</h3><p>Otra opción de playa encarnacena para sumar a un recorrido por la ribera.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="mapa" class="section" style="padding-top:0">
+      <div class="shell">
+        <p class="eyebrow">Ubicación</p>
+        <h2 class="title-section">Playa San José en el mapa.</h2>
+        <div class="map-shell">
+          <iframe src={mapEmbed} title="Mapa de Playa San José en Encarnación" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <div class="shell split">
+        <div>
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <h2 class="title-section">Antes de pisar la arena.</h2>
+          <p class="lead">Los horarios, condiciones de baño, eventos y reglas de estacionamiento pueden cambiar. Al llegar, la señalización y las indicaciones oficiales del día tienen prioridad.</p>
+        </div>
+        <div class="faq-list">
+          {faqItems.map(([question, answer]) => (
+            <details>
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-grid">
+      <div>
+        <a class="brand" href="#inicio"><img src="/logo.svg" alt="" /><span>Playa San José · Encarnación</span></a>
+        <p>Una guía visual para preparar una visita sencilla a la playa, la Costanera y el frente del río Paraná.</p>
+        <p class="disclaimer">Sitio informativo no oficial, sin afiliación con la Municipalidad de Encarnación, Google ni los operadores de servicios mencionados.</p>
+      </div>
+      <a class="btn btn-ghost" href={googleMapsUrl} target="_blank" rel="noreferrer">Ver ubicación ↗</a>
+    </div>
+  </footer>
+</BaseLayout>
