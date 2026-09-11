@@ -1,0 +1,8 @@
+name = "playa-san-jose-encarnacion"
+main = "./dist/_worker.js/index.js"
+compatibility_date = "2026-09-11"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
